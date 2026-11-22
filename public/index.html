@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fuyuha Shina</title>
+<style>
+/* Fuyuha Shina pastel design — styles only; existing DOM IDs and JS retained. */
+:root {
+  --bg: #bff5ef;
+  --panel: #fffcef;
+  --line: #463645;
+  --txt: #342b3c;
+  --dim: #716472;
+  --acc: #25b992;
+  --acc-dim: #a2ead0;
+  --red: #c73859;
+  --pink: #f59bc2;
+  --yellow: #ffd44a;
+  --shadow: rgba(55, 38, 55, .82);
+}
+* {box-sizing:border-box; margin:0; padding:0}
+html {scroll-behavior:smooth}
+body {
+  color:var(--txt);
+  background:
+    radial-gradient(circle at 9% 79%, rgba(250,152,205,.57), transparent 38%),
+    radial-gradient(circle at 93% 14%, rgba(155,243,231,.58), transparent 42%),
+    linear-gradient(180deg, #b9f7f3 0%, #c4f7ec 35%, #f4e2f0 69%, #f6dffa 100%);
+  font-family: 'Trebuchet MS', 'Arial Rounded MT Bold', 'Segoe UI', Arial, sans-serif;
+  font-size:14px;
+  line-height:1.55;
+  min-height:100vh;
+  padding:18px 12px 70px;
+  display:flex;
+  justify-content:center;
+  overflow-x:hidden;
+}
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  opacity:.27;
+  background-image:radial-gradient(#77bcc1 0.8px, transparent 0.9px);
+  background-size:18px 18px;
+  mask-image:linear-gradient(180deg,transparent 6%, #000 45%,#000 90%);
+}
+.wrap {
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:920px;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+/* Rearrange existing visual blocks without moving DOM nodes or touching scripts. */
+.wrap > .panel:not([id]) {
+  order:2;
+  border-radius:16px;
+  background:linear-gradient(90deg,#ffe0f1,#fff8d3 57%,#d9ffe7);
+  min-height:86px;
+  padding:15px 22px;
+  margin-bottom:13px;
+  gap:20px;
+}
+.wrap > .panel:not([id]) > div {flex:1; min-width:0}
+.wrap > .panel:not([id]) > div + div { border-left:2px dashed #bd9aab; padding-left:24px }
+.wrap > .panel:not([id]) div[style*="font-size:20px"] {
+  font-size:27px!important;
+  font-weight:900!important;
+  line-height:1.3;
+}
+.wrap > .panel:not([id]) div[style*="font-size:10.5px"] {color:#735f70!important; font-size:10px!important; font-weight:800; letter-spacing:.09em}
+.steps {
+  order:3;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  padding:9px;
+  border:3px solid var(--line);
+  border-radius:17px;
+  background:#fffdf0;
+  margin-bottom:19px;
+  box-shadow:0 4px 0 var(--shadow);
+}
+.steps div {
+  min-width:0;
+  text-align:center;
+  padding:11px 8px;
+  border:2px solid transparent;
+  border-radius:11px;
+  color:#574b56;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.015em;
+  text-transform:capitalize;
+  transition:background-color .16s,border-color .16s;
+}
+.steps div.on {
+  background:var(--pink);
+  border-color:#5a3146;
+  color:#392436;
+  box-shadow:0 3px 0 #7a4c67;
+}
+.steps div.done {
+  background:#d9f8e6;
+  border-color:#77bba0;
+  color:#216b55;
+}
+.panel {
+  background:var(--panel);
+  border:2.5px solid var(--line);
+  border-radius:19px;
+  padding:26px;
+  margin-bottom:17px;
+  box-shadow:0 5px 0 var(--shadow);
+}
+#p1,#p2,#p3 {order:4}
+.panel h2 {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#342b39;
+  font-size:21px;
+  font-weight:900;
+  line-height:1.25;
+  margin-bottom:10px;
+  text-transform:capitalize;
+  letter-spacing:-.025em;
+}
+.panel h2::before {
+  content:'✦';
+  display:inline-grid;
+  place-items:center;
+  background:#ffd05b;
+  width:35px;
+  height:35px;
+  border-radius:10px;
+  border:2px solid #604453;
+  color:#793b5c;
+  flex:0 0 auto;
+  font-size:21px;
+  box-shadow:0 2px 0 #7f6670;
+}
+#p2 h2::before {content:'✉'; background:#f8a6c6}
+#p3 h2::before {content:'✓'; background:#b4f3d1}
+.panel h2[style] {color:#188567!important}
+.panel .hint {
+  color:var(--dim);
+  font-size:13px;
+  margin-bottom:22px;
+  line-height:1.6;
+}
+label {
+  display:block;
+  color:#524154;
+  font-size:12px;
+  margin-bottom:7px;
+  font-weight:900;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+}
+input {
+  display:block;
+  width:100%;
+  background:#ffffff;
+  color:var(--txt);
+  font:inherit;
+  font-weight:600;
+  border:2px solid #8a7180;
+  border-radius:12px;
+  padding:13px 15px;
+  outline:none;
+  box-shadow:inset 0 2px 2px rgba(61,40,51,.04);
+  transition:border-color .14s, box-shadow .14s;
+}
+input::placeholder {color:#aa9fa9;font-weight:400}
+input:focus {
+  border-color:#d85b97;
+  box-shadow:0 0 0 3px #ffcee5;
+}
+button {
+  background:linear-gradient(180deg,#ffe77c,#ffd13e);
+  color:#3c2c3b;
+  border:2px solid #4e3748;
+  border-radius:12px;
+  font:inherit;
+  font-weight:900;
+  padding:12px 23px;
+  margin-top:17px;
+  min-height:46px;
+  cursor:pointer;
+  box-shadow:0 3px 0 #6b5161;
+  transition:transform .12s,box-shadow .12s,filter .12s;
+}
+button:hover:not(:disabled) {filter:brightness(1.035)}
+button:active:not(:disabled) {transform:translateY(2px);box-shadow:0 1px 0 #6b5161}
+button:focus-visible {outline:3px solid #d768a5;outline-offset:3px}
+button.sec, #b2 {
+  background:#fce3ed;
+  border:2px solid #795665;
+  color:#60475c;
+}
+button:disabled {opacity:.53;cursor:wait}
+#b2 {margin-right:10px}
+.msg {
+  padding:12px 15px;
+  font-size:13px;
+  font-weight:700;
+  margin:16px 0 0;
+  border-radius:11px;
+  display:none;
+  line-height:1.5;
+}
+.msg.err {display:block;background:#ffebf0;border:2px solid #df7896;color:var(--red)}
+.msg.ok {display:block;background:#e4fff0;border:2px solid #80cba6;color:#197c59}
+.kv {
+  display:flex;
+  gap:15px;
+  align-items:baseline;
+  justify-content:space-between;
+  padding:12px 0;
+  border-bottom:1px dashed #cdb8c2;
+  font-size:13px;
+}
+.kv:last-child {border-bottom:none}
+.kv b {color:#786474;font-weight:800;text-transform:uppercase;font-size:11px;letter-spacing:.03em}
+.kv span {color:#403242;text-align:right;word-break:break-all;max-width:64%;font-weight:700}
+.tok {
+  background:#fff;
+  border:2px solid #b7a1ae;
+  border-radius:12px;
+  padding:13px;
+  font-size:11px;
+  word-break:break-all;
+  color:#786777;
+  max-height:98px;
+  overflow:hidden;
+}
+button.tiny {margin:12px 8px 0 0;padding:9px 14px;min-height:38px;font-size:12px}
+footer {
+  order:5;
+  position:relative;
+  margin-top:26px;
+  padding:45px 5px 10px;
+  text-align:center;
+  font-size:11px;
+  font-weight:700;
+  color:#6f6071;
+}
+footer::before {
+  content:'Fuyuha Shina';
+  position:absolute;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  white-space:nowrap;
+  color:#50394e;
+  font-weight:900;
+  letter-spacing:.035em;
+  font-size:10px;
+}
+.hide {display:none!important}
+@media(min-width:700px) {
+  body {padding-top:26px}
+  .panel {padding:33px}
+  .panel h2 {font-size:24px}
+}
+@media(max-width:410px) {
+  body {padding:10px 8px 54px}
+  .wrap > .panel:not([id]) {padding:14px 12px;gap:9px}
+  .wrap > .panel:not([id]) > div + div {padding-left:11px}
+  .steps {gap:3px;padding:6px}
+  .steps div {padding:10px 2px;font-size:11px}
+  .panel {padding:19px 16px}
+  #b2 {margin-right:5px}
+  #b2,#b3 {padding-inline:12px}
+  footer::before {font-size:9px}
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="steps">
+  <div id="n1" class="on">01 email</div>
+  <div id="n2">02 link</div>
+  <div id="n3">03 done</div>
+</div>
+
+<div class="panel" style="display:flex;justify-content:space-between;align-items:center">
+  <div>
+    <div style="color:var(--dim);font-size:10.5px;letter-spacing:.05em">TOTAL AKTIVASI</div>
+    <div style="font-size:20px;font-weight:600;color:var(--acc)" id="st-total">-</div>
+  </div>
+  <div style="text-align:right">
+    <div style="color:var(--dim);font-size:10.5px;letter-spacing:.05em">HARI INI</div>
+    <div style="font-size:20px;font-weight:600" id="st-today">-</div>
+  </div>
+</div>
+
+<div class="panel" id="p1">
+  <h2>masukkan email</h2>
+  <p class="hint">link login dikirim ke email, tanpa password.</p>
+  <label>email</label>
+  <input id="em" type="email" placeholder="nama@email.com">
+  <button id="b1">kirim link &rarr;</button>
+  <div id="m1" class="msg"></div>
+</div>
+
+<div class="panel hide" id="p2">
+  <h2>tempel link</h2>
+  <p class="hint">link terkirim ke <span id="w-em" style="color:var(--txt)">-</span>. copy link dari email, paste di sini.</p>
+  <label>link verifikasi</label>
+  <input id="lk" type="text" placeholder="https://... atau oobCode">
+  <button id="b2">&larr; kembali</button>
+  <button id="b3">verifikasi &rarr;</button>
+  <div id="m2" class="msg"></div>
+</div>
+
+<div class="panel hide" id="p3">
+  <h2 style="color:var(--acc)">premium aktif</h2>
+  <p class="hint">detail akun di bawah, token bisa dicopy.</p>
+  <div class="kv"><b>email</b><span id="r-em">-</span></div>
+  <div class="kv"><b>uid</b><span id="r-uid">-</span></div>
+  <div class="kv"><b>order</b><span id="r-ord">-</span></div>
+  <div style="margin-top:12px">
+    <label>id token</label>
+    <div class="tok" id="r-tok">-</div>
+    <button class="tiny sec" id="b4">copy token</button>
+    <button class="tiny sec" id="b5">aktivasi lain</button>
+  </div>
+</div>
+
+<footer>unofficial &middot; reverse engineered &middot; use at your own risk</footer>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id)
+
+// API uses same-origin routes exposed by the existing Express backend.
+// No endpoint or request payload has been changed.
+const jsonRequest = async (path, payload) => {
+  const response = await fetch(path, payload === undefined ? undefined : {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  const type = response.headers.get('content-type') || ''
+  if (!type.includes('json')) {
+    throw new Error('Endpoint API tidak mengembalikan JSON (HTTP ' + response.status + ')')
+  }
+  const result = await response.json()
+  if (!response.ok && !result.message) {
+    result.message = 'API gagal (HTTP ' + response.status + ')'
+  }
+  return result
+}
+
+jsonRequest('/api/stats').then(result => {
+  if (!result.success) return
+  $('st-total').textContent = Number(result.total || 0).toLocaleString('id-ID')
+  $('st-today').textContent = Number(result.today || 0).toLocaleString('id-ID')
+}).catch(() => {})
+
+const step = n => {
+  for (let i = 1; i <= 3; i++) {
+    $('p' + i).classList.toggle('hide', i !== n)
+    $('n' + i).className = i < n ? 'done' : (i === n ? 'on' : '')
+  }
+}
+const say = (id, message, ok) => {
+  const element = $(id)
+  element.textContent = message
+  element.className = 'msg ' + (ok ? 'ok' : 'err')
+}
+const busy = (button, on, text) => {
+  button.disabled = on
+  if (text) button.textContent = text
+}
+const requestError = error => {
+  if (error instanceof TypeError) return 'Gagal menghubungi server. Periksa koneksi dan endpoint API.'
+  return error?.message || 'Terjadi kesalahan server.'
+}
+
+$('b1').onclick = async () => {
+  const em = $('em').value.trim()
+  if (!$('em').checkValidity() || !em.includes('@') || !em.includes('.')) {
+    return say('m1', 'Email tidak valid.', false)
+  }
+  const button = $('b1')
+  busy(button, true, 'mengirim...')
+  try {
+    const result = await jsonRequest('/api/send-link', { email: em })
+    if (result.success) {
+      say('m1', result.message || 'Link terkirim, cek email.', true)
+      $('w-em').textContent = em
+      setTimeout(() => step(2), 700)
+    } else {
+      say('m1', result.message || 'Gagal mengirim link.', false)
+    }
+  } catch (error) {
+    say('m1', requestError(error), false)
+  } finally {
+    busy(button, false, 'kirim link →')
+  }
+}
+
+$('b2').onclick = () => step(1)
+
+$('b3').onclick = async () => {
+  const raw = $('lk').value.trim()
+  if (!raw) return say('m2', 'Link kosong.', false)
+  const button = $('b3')
+  busy(button, true, 'verifikasi...')
+  try {
+    const result = await jsonRequest('/api/verify-link', {
+      email: $('w-em').textContent,
+      magicLink: raw
+    })
+    if (!result.success) {
+      say('m2', result.message || 'Verifikasi gagal.', false)
+      return
+    }
+    const data = result.data || {}
+    // The backend can return success:true for login even if premium activation failed.
+    // Never display "premium aktif" for the LOGIN_ONLY / INACTIVE response.
+    const premiumActive = data.status === 'ACTIVE' || data.membershipStatus === 'PREMIUM_ACTIVE'
+    if (!premiumActive) {
+      say('m2', result.message || 'Login berhasil, namun aktivasi premium belum berhasil.', false)
+      return
+    }
+    $('r-em').textContent = data.email || '-'
+    $('r-uid').textContent = data.uid || '-'
+    $('r-ord').textContent = data.orderId || '-'
+    $('r-tok').textContent = data.idToken || '-'
+    window.__tok = data.idToken || ''
+    step(3)
+  } catch (error) {
+    say('m2', requestError(error), false)
+  } finally {
+    busy(button, false, 'verifikasi →')
+  }
+}
+
+$('b4').onclick = async () => {
+  const button = $('b4')
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error('clipboard unavailable')
+    await navigator.clipboard.writeText(window.__tok || '')
+    button.textContent = 'copied'
+  } catch {
+    button.textContent = 'salin manual'
+  }
+}
+$('b5').onclick = () => {
+  $('lk').value = ''
+  $('em').value = ''
+  $('m1').className = 'msg'
+  $('m2').className = 'msg'
+  $('b4').textContent = 'copy token'
+  step(1)
+}
+</script>
+</body>
+</html>
