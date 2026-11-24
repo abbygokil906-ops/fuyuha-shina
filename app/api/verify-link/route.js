@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
 
   const uid = v.uid || v.user?.localId || '-'
   const premium = await auth.pro(v.id)
-  const stats = premium.ok ? incrementStats() : getStats()
+  const stats = await (premium.ok ? incrementStats() : getStats())
 
   const now = new Date()
   const until = new Date()
