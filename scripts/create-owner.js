@@ -1,5 +1,5 @@
 require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { connectDB, getDB } = require('../lib/db');
 
 (async () => {
