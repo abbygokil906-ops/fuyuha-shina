@@ -1,4 +1,4 @@
-require('dotenv').config() // BARU: load .env sebelum yang lain
+try { require('dotenv').config() } catch {} // BARU: load .env sebelum yang lain
 const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser') // BARU
