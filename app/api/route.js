@@ -1,3 +1,5 @@
+const { requireApiToken } = require('../../lib/apiToken')
+router.get('/data', requireApiToken, handler)
 const express = require('express');
 const statusRoute = require('./status/route');
 const sendLinkRoute = require('./send-link/route');
